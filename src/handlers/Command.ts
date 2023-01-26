@@ -2,7 +2,7 @@ import { Client, REST, Routes, SlashCommandBuilder } from 'discord.js';
 import { join } from 'path';
 import { readdirSync } from 'fs';
 import { SlashCommand } from 'src/types';
-import { color } from 'src/util/Color';
+import { color } from '../util/Color';
 
 module.exports = (client: Client, config: any) => {
     const slashCommands: SlashCommandBuilder[] = []

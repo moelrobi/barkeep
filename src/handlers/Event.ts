@@ -2,7 +2,7 @@ import { Client } from "discord.js";
 import { join } from "path";
 import { readdirSync } from 'fs';
 import { BotEvent } from 'src/types';
-import { color } from 'src/util/Color';
+import { color } from '../util/Color';
 
 module.exports = (client: Client) => {
     let eventsDir = join(__dirname, '../events');
