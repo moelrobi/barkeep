@@ -2,6 +2,7 @@ import { Client, REST, Routes, SlashCommandBuilder } from 'discord.js';
 import { join } from 'path';
 import { readdirSync } from 'fs';
 import { SlashCommand } from 'src/types';
+import { color } from 'src/util/Color';
 
 module.exports = (client: Client, config: any) => {
     const slashCommands: SlashCommandBuilder[] = []
@@ -18,8 +19,8 @@ module.exports = (client: Client, config: any) => {
     rest.put(Routes.applicationCommands(config.appId), {
         body: slashCommands.map(command => command.toJSON())
     }).then((data: any) => {
-        console.log(`Loaded ${data.length} slash command(s)`);
+        console.log(color('info', `✅ | Loaded ${data.length} slash command(s)`));
     }).catch(err => {
-        console.error(err);
+        console.error(color('error', err));
     })
 }
