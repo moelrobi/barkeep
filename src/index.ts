@@ -1,6 +1,6 @@
 // Import libary for usage
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
-import { SlashCommand } from './types';
+import { SlashCommand } from 'src/types';
 import { join } from 'path';
 import { readdirSync } from 'fs';
 
