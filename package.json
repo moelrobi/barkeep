@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "chalk": "^5.2.0",
     "discord.js": "^14.7.1"
   },
   "devDependencies": {
