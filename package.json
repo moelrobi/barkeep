@@ -5,6 +5,9 @@
   "main": "index.js",
   "repository": "https://github.com/moelrobi/fib-bot",
   "author": "Robin Möller <robin@moeller.mx>",
+  "scripts": {
+    "start": "tsc && node ./build/index.js"
+  },
   "license": "MIT",
   "private": true,
   "dependencies": {
