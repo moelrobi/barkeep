@@ -11,7 +11,7 @@ const menu: ContextMenu = {
         if (!interaction.inGuild()) return;
 
         // Delay the interaction. Required for discord.
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral: true});
         // Convert the Interaction to a UserContextMenu Interaction.
         interaction = interaction as UserContextMenuCommandInteraction;
 

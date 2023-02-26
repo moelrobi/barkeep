@@ -1,16 +1,16 @@
-import { Client, REST, Routes, ContextMenuCommandBuilder } from 'discord.js';
+import { Client, ContextMenuCommandBuilder, REST, Routes } from 'discord.js';
 import { join } from 'path';
 import { readdirSync } from 'fs';
+import { ContextMenu } from 'src/types';
 import { color } from '../util/Color';
-import { ContextMenu } from "src/types";
 
 module.exports = (client: Client, config: any) => {
     const contextMenus: ContextMenuCommandBuilder[] = []
-    let commandsDir = join(__dirname, '../menus');
+    let menusDir = join(__dirname, '../menus');
 
-    readdirSync(commandsDir).forEach(file => {
+    readdirSync(menusDir).forEach(file => {
         if(!file.endsWith('.js')) return;
-        let command: ContextMenu = require(`${commandsDir}/${file}`).default;
+        let command: ContextMenu = require(`${menusDir}/${file}`).default;
         contextMenus.push(command.menu);
         client.contextMenus.set(command.menu.name, command);
     })
@@ -21,6 +21,6 @@ module.exports = (client: Client, config: any) => {
     }).then((data: any) => {
         console.log(color('info', `✅ | Loaded ${data.length} context menu(s)`));
     }).catch(err => {
-        console.log(color('error', err));
+        console.error(color('error', err));
     })
 }

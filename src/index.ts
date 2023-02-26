@@ -1,6 +1,6 @@
 // Import libary for usage
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
-import { ContextMenu, SlashCommand } from 'src/types';
+import { ContextMenu } from 'src/types';
 import { join } from 'path';
 import { readdirSync } from 'fs';
 
@@ -11,8 +11,6 @@ const client = new Client({intents: [Guilds, MessageContent, GuildMessages, Guil
 // Load configuration
 const config = require('../config/config.json');
 
-// Create slash Commands Collection
-client.slashCommands = new Collection<string, SlashCommand>();
 client.cooldowns = new Collection<string, number>();
 client.contextMenus = new Collection<string, ContextMenu>();
 client.config = config;

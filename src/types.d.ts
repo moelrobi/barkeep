@@ -1,12 +1,5 @@
 import { AnySelectMenuInteraction, ContextMenuCommandBuilder, Interaction, SlashCommandBuilder } from "discord.js";
 
-export interface SlashCommand {
-    command: SlashCommandBuilder | any,
-    execute: (interaction: Interaction) => void,
-    autocomplete?: (interaction: AutoCompleteInteraction) => void,
-    cooldown?: number
-}
-
 export interface ContextMenu {
     menu: ContextMenuCommandBuilder | any,
     execute: (interaction: Interaction) => void
