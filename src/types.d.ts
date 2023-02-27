@@ -1,4 +1,5 @@
 import { AnySelectMenuInteraction, ContextMenuCommandBuilder, Interaction, SlashCommandBuilder } from "discord.js";
+import Logger from "src/util/Logger";
 
 export interface ContextMenu {
     menu: ContextMenuCommandBuilder | any,
@@ -17,5 +18,6 @@ declare module "discord.js" {
         cooldowns: Collection<string, number>
         contextMenus: Collection<string, ContextMenu>
         config: any
+        logger: Logger
     }
 }

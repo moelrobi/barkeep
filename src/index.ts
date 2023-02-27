@@ -3,6 +3,7 @@ import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { ContextMenu } from 'src/types';
 import { join } from 'path';
 import { readdirSync } from 'fs';
+import Logger from 'src/util/Logger';
 
 // Set constans
 const { Guilds, MessageContent, GuildMessages, GuildMembers } = GatewayIntentBits;
@@ -14,6 +15,7 @@ const config = require('../config/config.json');
 client.cooldowns = new Collection<string, number>();
 client.contextMenus = new Collection<string, ContextMenu>();
 client.config = config;
+client.logger = new Logger(client);
 
 // Load handlers responsible for registing Bot features
 const handlersDir = join(__dirname, './handlers');
