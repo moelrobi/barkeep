@@ -1,5 +1,5 @@
 import { AnySelectMenuInteraction, ContextMenuCommandBuilder, Interaction, SlashCommandBuilder } from "discord.js";
-import Logger from "src/util/Logger";
+import Logger from "./util/Logger";
 
 export interface ContextMenu {
     menu: ContextMenuCommandBuilder | any,

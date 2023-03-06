@@ -3,7 +3,7 @@ import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { ContextMenu } from 'src/types';
 import { join } from 'path';
 import { readdirSync } from 'fs';
-import Logger from 'src/util/Logger';
+import Logger from './util/Logger';
 
 // Set constans
 const { Guilds, MessageContent, GuildMessages, GuildMembers } = GatewayIntentBits;
