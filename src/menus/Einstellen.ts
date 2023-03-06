@@ -1,4 +1,4 @@
-import { ApplicationCommandType, ContextMenuCommandBuilder, UserContextMenuCommandInteraction, GuildMemberRoleManager, Guild, EmbedBuilder, GuildMember } from "discord.js";
+import { ApplicationCommandType, ContextMenuCommandBuilder, UserContextMenuCommandInteraction, GuildMemberRoleManager, EmbedBuilder, GuildMember, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { ContextMenu } from "src/types";
 import { color } from "../util/Color";
 
@@ -10,39 +10,54 @@ const menu: ContextMenu = {
         if (!interaction.isRepliable()) return;
         if (!interaction.inGuild()) return;
 
-        // Delay the interaction. Required for discord.
-        await interaction.deferReply({ephemeral: true});
         // Convert the Interaction to a UserContextMenu Interaction.
         interaction = interaction as UserContextMenuCommandInteraction;
 
         if (!interaction.targetMember) return;
 
+        const modal = new ModalBuilder()
+            .setCustomId('einstellen_modal')
+            .setTitle('Einstellen');
+
+        const name = new TextInputBuilder()
+            .setCustomId('einstellen_name')
+            .setLabel("Name der Person?")
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true);
+
+        const dn = new TextInputBuilder()
+            .setCustomId('einstellen_dn')
+            .setLabel("Wie lautet die Dienstnummer der Person?")
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true);
+
+        const first = new ActionRowBuilder<TextInputBuilder>().addComponents(name);
+        const second = new ActionRowBuilder<TextInputBuilder>().addComponents(dn);
+        modal.addComponents(first, second);
+
+        await interaction.showModal(modal);
         let memberRoles = interaction.targetMember.roles as GuildMemberRoleManager;
-        memberRoles.set(interaction.client.config.einstellungsRollen + interaction.targetMember.roles);
+        let member = interaction.targetMember as GuildMember;
 
-        let issuer = interaction.member as GuildMember;
-        let loggingArea = interaction.guild?.channels.resolve(interaction.client.config.einstellungsLogChannel);
-        if (!loggingArea?.isTextBased()) return;
+        await interaction.awaitModalSubmit({time: 60_000}).then(
+            async (i) => {
+                await i.deferReply({ephemeral: true});
 
-        loggingArea.send({
-            embeds: [
-                new EmbedBuilder()
-                    .setAuthor({
-                        name: issuer.nickname!!,
-                        iconURL: issuer.avatarURL()!!
-                    })
-                    .setTitle("Einstellung")
-                    .setDescription(`${issuer.nickname} hat grade ${interaction.targetUser.tag} (${interaction.targetUser.id}) eingestellt.`)
-                    .setColor("Aqua")
-                    .setFooter({
-                        text: "Athena-System | made with ❤️ by Spades", 
-                        iconURL: interaction.client.user.avatarURL()!!
-                    })
-            ]
-        })
+                let allRoles = interaction.client.config.discord.einstellungsRollen;
+                memberRoles.cache.forEach(role => allRoles.push(role.id));
+                memberRoles.set(allRoles);
 
-        // Finish the interaction.
-        interaction.editReply('✅');
+                await member.setNickname(`[FIB-${i.fields.getTextInputValue("einstellen_dn")}] ${i.fields.getTextInputValue("einstellen_name")}`);
+
+                let issuer = interaction.member as GuildMember;
+                interaction.client.logger.logToDiscord(interaction, issuer, 'Einstellung', 
+                `${issuer.nickname} hat grade ${member.nickname} (${member.id}) eingestellt.`);
+
+                i.editReply('✅');
+            })
+            .catch(err => {
+                console.log(color('error', err))
+            });
     }
 }
 
