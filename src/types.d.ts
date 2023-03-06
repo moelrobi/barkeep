@@ -1,4 +1,5 @@
 import { AnySelectMenuInteraction, ContextMenuCommandBuilder, Interaction, SlashCommandBuilder } from "discord.js";
+import TrelloClient from "./util/Trello";
 
 export interface ContextMenu {
     menu: ContextMenuCommandBuilder | any,
@@ -16,6 +17,7 @@ declare module "discord.js" {
         slashCommands: Collection<string, SlashCommand>
         cooldowns: Collection<string, number>
         contextMenus: Collection<string, ContextMenu>
-        config: any
+        config: any,
+        trello: TrelloClient
     }
 }
