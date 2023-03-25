@@ -41,11 +41,26 @@ const menu: ContextMenu = {
                 // Delay the interaction. Required for discord.
                 await i.deferReply({ephemeral: true});
 
-                member.roles.set(interaction.client.config.discord.defaultRole);
-
                 let issuer = interaction.member as GuildMember;
-                    interaction.client.logger.logToDiscord(interaction, issuer, 'Kündigung', 
-                    `${issuer.nickname} hat grade ${member.nickname} (${member.id}) gekündigt.`, {name: "Grund: ", value: i.fields.getTextInputValue("kuendigung_reason")});
+                let postedToTrello: boolean = false;
+
+                let cards = await interaction.client.trello.getCards(interaction.client.config.trello.boardId);
+                cards.data.forEach(async (element: any) => {
+                    if(element.name === member.nickname) {
+                        await interaction.client.trello.commentOnCard(element.id, `**Kündigung**%0AAusführende Person: ${issuer.nickname}%0AGrund: ${i.fields.getTextInputValue("kuendigung_reason")}%0ADatum: ${new Date().toLocaleDateString('de-DE', {year: 'numeric', month: 'numeric', day: 'numeric'})}`);
+                        await interaction.client.trello.moveCardToList(element.id, interaction.client.config.trello.gekuendigtListId);
+                        postedToTrello = true;
+                        return;
+                    }
+                });
+
+                await member.roles.set(interaction.client.config.discord.defaultRole);
+
+                interaction.client.logger.logToDiscord({ interaction, issuer, title: 'Kündigung', description: `${issuer.nickname} hat grade ${member.nickname} (${member.id}) gekündigt.`, color: "Red", fields: [{ name: "Grund: ", value: i.fields.getTextInputValue("kuendigung_reason") }] });
+                
+                if(!postedToTrello) {
+                    interaction.client.logger.logToDiscord({ interaction, issuer, title: 'Warnung', description: 'Es gab ein Problem diesen Eintrag auf Trello zu veröffentlichen!\nBitte trage es nach!', color: 'Orange' });
+                }
 
                  // Finish the interaction.
                 i.editReply('✅');

@@ -1,4 +1,4 @@
-import { APIEmbedField, Client, EmbedBuilder, GuildMember, Interaction } from "discord.js";
+import { APIEmbedField, Client, ColorResolvable, EmbedBuilder, GuildMember, Interaction } from "discord.js";
 
 class Logger {
     private client: Client;
@@ -7,7 +7,7 @@ class Logger {
         this.client = client;
     }
 
-    public logToDiscord(interaction: Interaction, issuer: GuildMember, title: string, description: string, ...fields: APIEmbedField[]) {
+    public logToDiscord({ interaction, issuer, title, description, color = "Aqua", fields = [] }: { interaction: Interaction; issuer: GuildMember; title: string; description: string; color?: ColorResolvable; fields?: APIEmbedField[]; }) {
         let loggingArea = interaction.guild?.channels.resolve(this.client.config.discord.einstellungsLogChannel);
         if (!loggingArea?.isTextBased()) return;
 
@@ -20,7 +20,7 @@ class Logger {
                     })
                     .setTitle(title)
                     .setDescription(description)
-                    .setColor("Aqua")
+                    .setColor(color)
                     .setFooter({
                         text: "Athena-System | made with ❤️ by Spades",
                         iconURL: this.client.user?.avatarURL()!!

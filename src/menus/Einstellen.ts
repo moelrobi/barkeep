@@ -47,11 +47,13 @@ const menu: ContextMenu = {
                 memberRoles.cache.forEach(role => allRoles.push(role.id));
                 memberRoles.set(allRoles);
 
-                await member.setNickname(`[FIB-${i.fields.getTextInputValue("einstellen_dn")}] ${i.fields.getTextInputValue("einstellen_name")}`);
-
                 let issuer = interaction.member as GuildMember;
-                interaction.client.logger.logToDiscord(interaction, issuer, 'Einstellung', 
-                `${issuer.nickname} hat grade ${member.nickname} (${member.id}) eingestellt.`);
+
+                await member.setNickname(`[FIB-${i.fields.getTextInputValue("einstellen_dn")}] ${i.fields.getTextInputValue("einstellen_name")}`);
+                let response = await interaction.client.trello.createCard(interaction.client.config.trello.defaultBaseListId, member.nickname!!);
+                await interaction.client.trello.commentOnCard(response.data.id, `**Einstellung**\nAuszuführende Person: ${issuer.nickname}\nDatum: ${new Date().toLocaleDateString('de-DE', {dateStyle: 'full', year: 'numeric', month: 'numeric', day: 'numeric'})})}`)
+
+                interaction.client.logger.logToDiscord({ interaction, issuer, title: 'Einstellung', description: `${issuer.nickname} hat grade ${member.nickname} (${member.id}) eingestellt.` });
 
                 i.editReply('✅');
             })
