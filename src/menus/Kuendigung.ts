@@ -1,4 +1,4 @@
-import { ApplicationCommandType, ContextMenuCommandBuilder, UserContextMenuCommandInteraction, GuildMemberRoleManager, EmbedBuilder, GuildMember, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } from "discord.js";
+import { ApplicationCommandType, ContextMenuCommandBuilder, UserContextMenuCommandInteraction, GuildMemberRoleManager, EmbedBuilder, GuildMember, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, Interaction } from "discord.js";
 import { ContextMenu } from "src/types";
 import { color } from "../util/Color";
 
@@ -42,27 +42,22 @@ const menu: ContextMenu = {
                 await i.deferReply({ephemeral: true});
 
                 let issuer = interaction.member as GuildMember;
-                let postedToTrello: boolean = false;
 
                 let cards = await interaction.client.trello.getCards(interaction.client.config.trello.boardId);
-                cards.data.forEach(async (element: any) => {
-                    if(element.name === member.nickname) {
-                        await interaction.client.trello.commentOnCard(element.id, `**Kündigung**%0AAusführende Person: ${issuer.nickname}%0AGrund: ${i.fields.getTextInputValue("kuendigung_reason")}%0ADatum: ${new Date().toLocaleDateString('de-DE', {year: 'numeric', month: 'numeric', day: 'numeric'})}`);
-                        await interaction.client.trello.moveCardToList(element.id, interaction.client.config.trello.gekuendigtListId);
-                        postedToTrello = true;
-                        return;
-                    }
-                });
+                let card = cards.data.filter((element: any) => element.name === member.nickname);
+
+                if(card.length === 0) {
+                    notTrello(interaction, issuer);
+                } else {
+                    await interaction.client.trello.commentOnCard(card[0].id, `**Kündigung**%0AAusführende Person: ${issuer.nickname}%0AGrund: ${i.fields.getTextInputValue("kuendigung_reason")}%0ADatum: ${new Date().toLocaleDateString('de-DE', {year: 'numeric', month: 'numeric', day: 'numeric'})}`);
+                    await interaction.client.trello.moveCardToList(card[0].id, interaction.client.config.trello.gekuendigtListId);
+                }
 
                 await member.roles.set(interaction.client.config.discord.defaultRole);
 
                 interaction.client.logger.logToDiscord({ interaction, issuer, title: 'Kündigung', description: `${issuer.nickname} hat grade ${member.nickname} (${member.id}) gekündigt.`, color: "Red", fields: [{ name: "Grund: ", value: i.fields.getTextInputValue("kuendigung_reason") }] });
-                
-                if(!postedToTrello) {
-                    interaction.client.logger.logToDiscord({ interaction, issuer, title: 'Warnung', description: 'Es gab ein Problem diesen Eintrag auf Trello zu veröffentlichen!\nBitte trage es nach!', color: 'Orange' });
-                }
 
-                 // Finish the interaction.
+                // Finish the interaction.
                 i.editReply('✅');
             },
             err => {
@@ -72,3 +67,7 @@ const menu: ContextMenu = {
 }
 
 export default menu;
+
+function notTrello(interaction: Interaction, issuer: GuildMember) {
+    interaction.client.logger.logToDiscord({ interaction, issuer, title: 'Warnung', description: 'Es gab ein Problem diesen Eintrag auf Trello zu veröffentlichen!\nBitte trage es nach!', color: 'Orange' });
+}
