@@ -23,3 +23,9 @@ declare module "discord.js" {
         logger: Logger
     }
 }
+
+export interface Taskforce {
+    name: string,
+    leader?: string,
+    members: string[]
+}

@@ -16,7 +16,7 @@ const menu: ContextMenu = {
         if (!interaction.targetMember) return;
         let member = interaction.targetMember as GuildMember
 
-        if(!member.roles.cache.hasAny("950871396861493278")) {
+        if(!member.roles.cache.hasAny(interaction.client.config.discord.fibRole)) {
             interaction.reply({content: '⚠️ | Person ist nicht im FIB, weswegen ich nicht kündigen kann!', ephemeral: true})
             return;
         }
