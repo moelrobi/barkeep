@@ -51,11 +51,11 @@ const menu: ContextMenu = {
 
                 await member.setNickname(`[FIB-${i.fields.getTextInputValue("einstellen_dn")}] ${i.fields.getTextInputValue("einstellen_name")}`);
                 let response = await interaction.client.trello.createCard(interaction.client.config.trello.defaultBaseListId, member.nickname!!);
-                await interaction.client.trello.commentOnCard(response.data.id, `**Einstellung**\nAuszuführende Person: ${issuer.nickname}\nDatum: ${new Date().toLocaleDateString('de-DE', {year: 'numeric', month: 'numeric', day: 'numeric'})})}`)
+                await interaction.client.trello.commentOnCard(response.data.id, `**Einstellung**%0AAuszuführende Person: ${issuer.nickname}%0ADatum: ${new Date().toLocaleDateString('de-DE', {year: 'numeric', month: 'numeric', day: 'numeric'})})}`)
 
                 interaction.client.logger.logToDiscord({ interaction, issuer, title: 'Einstellung', description: `${issuer.nickname} hat grade ${member.nickname} (${member.id}) eingestellt.` });
 
-                i.editReply('✅');
+                i.followUp('✅');
             })
             .catch(err => {
                 console.log(color('error', err))
