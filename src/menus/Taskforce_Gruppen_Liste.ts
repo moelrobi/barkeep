@@ -10,7 +10,7 @@ const menu: ContextMenu = {
         if (!interaction.inGuild()) return;
 
         interaction = interaction as MessageContextMenuCommandInteraction;
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral: true});
 
         let channels = await interaction.guild?.channels.fetch();
         if(channels == undefined) {
