@@ -1,4 +1,4 @@
-import { ApplicationCommandType, ContextMenuCommandBuilder, UserContextMenuCommandInteraction, GuildMemberRoleManager, EmbedBuilder, GuildMember, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRow, RoleSelectMenuBuilder } from "discord.js";
+import { ApplicationCommandType, ContextMenuCommandBuilder, UserContextMenuCommandInteraction, GuildMemberRoleManager, EmbedBuilder, GuildMember, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRow, RoleSelectMenuBuilder, ComponentType } from "discord.js";
 import { ContextMenu } from "src/types";
 import { color } from "../util/Color";
 
@@ -22,7 +22,14 @@ const menu: ContextMenu = {
                 .setMaxValues(1)
         );
 
-        await interaction.reply({components: [row], ephemeral: true, content: 'nice'})
+        await interaction.reply({ components: [row], ephemeral: true, content: 'nice' });
+        await interaction.channel?.awaitMessageComponent({ filter: (interaction) => interaction.customId === "befoerderung_rang", time: 60_000 }).then(async (interaction) => {
+            if (!interaction.isRoleSelectMenu()) return;
+            const role = interaction.values[0];
+            const member = interaction.member as GuildMember;
+
+            await interaction.reply({ content: 'nice', ephemeral: true });
+        });
     }
 }
 
