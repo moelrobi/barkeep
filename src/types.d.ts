@@ -1,10 +1,16 @@
-import { AnySelectMenuInteraction, ContextMenuCommandBuilder, Interaction, SlashCommandBuilder } from "discord.js";
+import {ContextMenuCommandBuilder, Interaction, SlashCommandBuilder } from "discord.js";
 import Logger from "./util/Logger";
 import TrelloClient from "./util/Trello";
+import CommandApplicationLoader from "./handlers/CommandApplicationLoader";
 
 export interface ContextMenu {
     menu: ContextMenuCommandBuilder | any,
     execute: (interaction: Interaction) => void
+}
+
+export interface SlashCommand {
+    command: SlashCommandBuilder | any,
+    execute: (interaction: Internaction) => void
 }
 
 export interface BotEvent {

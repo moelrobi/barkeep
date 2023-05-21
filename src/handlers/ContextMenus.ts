@@ -1,10 +1,10 @@
-import { Client, ContextMenuCommandBuilder, REST, Routes } from 'discord.js';
+import { Client, ContextMenuCommandBuilder, REST, RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord.js';
 import { join } from 'path';
 import { readdirSync } from 'fs';
 import { ContextMenu } from 'src/types';
 import { color } from '../util/Color';
 
-module.exports = (client: Client, config: any) => {
+module.exports = (client: Client): Array<RESTPostAPIApplicationCommandsJSONBody> => {
     const contextMenus: ContextMenuCommandBuilder[] = []
     let menusDir = join(__dirname, '../menus');
 
@@ -13,14 +13,8 @@ module.exports = (client: Client, config: any) => {
         let command: ContextMenu = require(`${menusDir}/${file}`).default;
         contextMenus.push(command.menu);
         client.contextMenus.set(command.menu.name, command);
+        console.log(color('info', `✅ | Loaded context menu ${color('variable', command.menu.name)}.`));
     })
-
-    const rest = new REST({version: '10'}).setToken(config.token);
-    rest.put(Routes.applicationCommands(config.appId), {
-        body: contextMenus.map(menu => menu.toJSON())
-    }).then((data: any) => {
-        console.log(color('info', `✅ | Loaded ${data.length} context menu(s)`));
-    }).catch(err => {
-        console.error(color('error', err));
-    })
+    
+    return contextMenus.map(menu => menu.toJSON());
 }
