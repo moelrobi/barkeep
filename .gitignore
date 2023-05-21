@@ -106,3 +106,5 @@ dist
 
 config/config.json
 build/
+
+*DS_Store*
