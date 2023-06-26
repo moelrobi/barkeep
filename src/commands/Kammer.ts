@@ -28,7 +28,7 @@ const command = {
             interaction.channel?.send({ embeds: [new EmbedBuilder()
                 .setColor('Red')
                 .setTitle('**<:FIB:962112073360367726> | Asservatenkammer**')
-                .setDescription(`**Ausgabe:** ${name}\n**An:** ${von}`)
+                .setDescription(`> **Ausgabe:** ${name}\n> **An:** ${von}`)
                 .setAuthor({name: interaction.member.nickname!!, iconURL: interaction.user.displayAvatarURL()})
                 .setTimestamp(new Date())
                 .setFooter({text: 'Athena-System | made with ❤️ by Spades', iconURL: interaction.client.user?.displayAvatarURL()!!})
