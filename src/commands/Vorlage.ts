@@ -30,7 +30,7 @@ const command = {
         
         // Defer the reply to the interaction.
         // Give the Bot time to execute the command.
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply();
 
         // Get the values from the options.
         const id = interaction.options.get('id')?.value;
@@ -89,14 +89,12 @@ const command = {
                             value: "Solltest du noch etwas zum Abschluss zu sagen haben, kannst du dies hier tun."
                         }
                     ])
-                await interaction.channel?.send({embeds: [embed]})
+                await interaction.editReply({embeds: [embed]})
                 break;
             default:
                 await interaction.editReply({content: '❌ | Die Vorlage wurde nicht gefunden. Melde dich bei 420. :)'});
-                return;
+                break;
         }
-
-        await interaction.editReply({ content: `✅` });
     }
 };
 
