@@ -8,7 +8,7 @@ class Logger {
     }
 
     public logToDiscord({ interaction, issuer, title, description, color = "Aqua", fields = [] }: { interaction: Interaction; issuer: GuildMember; title: string; description: string; color?: ColorResolvable; fields?: APIEmbedField[]; }) {
-        let loggingArea = interaction.guild?.channels.resolve(this.client.config.discord.einstellungsLogChannel);
+        let loggingArea = interaction.guild?.channels.resolve(this.client.config.discord.logChannel);
         if (!loggingArea?.isTextBased()) return;
 
         loggingArea.send({

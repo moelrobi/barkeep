@@ -49,7 +49,7 @@ const menu: ContextMenu = {
 
                 let issuer = interaction.member as GuildMember;
 
-                await member.setNickname(`[FIB-${i.fields.getTextInputValue("einstellen_dn")}] ${i.fields.getTextInputValue("einstellen_name")}`);
+                await member.setNickname(`[A-${i.fields.getTextInputValue("einstellen_dn")}] ${i.fields.getTextInputValue("einstellen_name")}`);
                 let response = await interaction.client.trello.createCard(interaction.client.config.trello.defaultBaseListId, member.nickname!!);
                 await interaction.client.trello.commentOnCard(response.data.id, `**Einstellung**%0AAuszuführende Person: ${issuer.nickname}%0ADatum: ${new Date().toLocaleDateString('de-DE', {year: 'numeric', month: 'numeric', day: 'numeric'})})}`)
 

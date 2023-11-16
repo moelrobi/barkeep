@@ -1,13 +1,20 @@
 {
     "token": "",
     "appId": "",
-    "einstellungsRollen": [
-        "1012829792527208579",
-        "948196870721765416",
-        "1012823640347246654",
-        "994298373630869545",
-        "1013058000002498590",
-        "950871396861493278"
-    ],
-    "einstellungsLogChannel": "1067815399493734490"
+    "discord": {
+        "einstellungsRollen": [
+            ""
+        ],
+        "logChannel": "",
+        "pdRole": "",
+        "defaultRole": ""
+    },
+    "trello": {
+        "apikey": "",
+        "token": "",
+        "baseURL": "https://api.trello.com/1/",
+        "boardId": "",
+        "defaultBaseListId": "",
+        "gekuendigtListId": ""
+    }
 }

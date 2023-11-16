@@ -6,12 +6,18 @@ class TrelloClient {
     private apiKey: string;
     private token: string;
     private baseURL: string;
+    private moduleActive: boolean;
 
     constructor(client: Client) {
         this.client = client;
         this.apiKey = client.config.trello.apikey;
         this.token = client.config.trello.token;
         this.baseURL = client.config.trello.baseURL;
+        this.moduleActive = client.config.trello.enabled;
+    }
+
+    isActive(): boolean {
+        return this.moduleActive;
     }
 
     async getBoards(): Promise<AxiosResponse<any, any>> {

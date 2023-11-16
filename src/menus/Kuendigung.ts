@@ -16,8 +16,8 @@ const menu: ContextMenu = {
         if (!interaction.targetMember) return;
         let member = interaction.targetMember as GuildMember
 
-        if(!member.roles.cache.hasAny(interaction.client.config.discord.fibRole)) {
-            interaction.reply({content: '⚠️ | Person ist nicht im FIB, weswegen ich nicht kündigen kann!', ephemeral: true})
+        if(!member.roles.cache.hasAny(interaction.client.config.discord.pdRole)) {
+            interaction.reply({content: '⚠️ | Person ist nicht im PD, weswegen ich nicht kündigen kann!', ephemeral: true})
             return;
         }
 
@@ -53,7 +53,9 @@ const menu: ContextMenu = {
                     await interaction.client.trello.moveCardToList(card[0].id, interaction.client.config.trello.gekuendigtListId);
                 }
 
-                await member.roles.set(interaction.client.config.discord.defaultRole);
+                console.log(interaction.client.config.discord.defaultRole)
+
+                await member.roles.set([interaction.client.config.discord.defaultRole]);
 
                 interaction.client.logger.logToDiscord({ interaction, issuer, title: 'Kündigung', description: `${issuer.nickname} hat grade ${member.nickname} (${member.id}) gekündigt.`, color: "Red", fields: [{ name: "Grund: ", value: i.fields.getTextInputValue("kuendigung_reason") }] });
 

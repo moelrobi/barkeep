@@ -27,7 +27,7 @@ const command = {
         if(ausgabe) {
             interaction.channel?.send({ embeds: [new EmbedBuilder()
                 .setColor('Red')
-                .setTitle('**<:FIB:962112073360367726> | Asservatenkammer**')
+                .setTitle('**Asservatenkammer**')
                 .setDescription(`> **Ausgabe:** ${name}\n> **An:** ${von}`)
                 .setAuthor({name: interaction.member.nickname!!, iconURL: interaction.user.displayAvatarURL()})
                 .setTimestamp(new Date())
@@ -39,7 +39,7 @@ const command = {
 
         interaction.channel?.send({ embeds: [new EmbedBuilder()
             .setColor('Green')
-            .setTitle('**<:FIB:962112073360367726> | Asservatenkammer**')
+            .setTitle('**Asservatenkammer**')
             .setDescription(`> **Eingabe:** ${name}\n> **Von:** ${von}\n> **Datum: **${time(new Date())}`)
             .setAuthor({name: interaction.member.nickname!!, iconURL: interaction.user.displayAvatarURL()})
             .setTimestamp(new Date())
