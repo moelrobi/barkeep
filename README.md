@@ -1,3 +1,3 @@
-# fib-bot
+# Barkeep!
 
-Hier wird nicht länger dran gearbeitet. Punkt.
+More comming soon! :)
