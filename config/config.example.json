@@ -2,19 +2,7 @@
     "token": "",
     "appId": "",
     "discord": {
-        "einstellungsRollen": [
-            ""
-        ],
         "logChannel": "",
-        "pdRole": "",
-        "defaultRole": ""
-    },
-    "trello": {
-        "apikey": "",
-        "token": "",
-        "baseURL": "https://api.trello.com/1/",
-        "boardId": "",
-        "defaultBaseListId": "",
-        "gekuendigtListId": ""
+        "autoRoles": [""]
     }
 }

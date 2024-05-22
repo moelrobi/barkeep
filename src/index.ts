@@ -1,9 +1,6 @@
 // Import libary for usage
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
-import TrelloClient from "./util/Trello";
 import { ContextMenu, SlashCommand } from 'src/types';
-import { join } from 'path';
-import { readdirSync } from 'fs';
 import Logger from './util/Logger';
 import CommandApplicationLoader from './handlers/CommandApplicationLoader';
 
@@ -19,7 +16,6 @@ client.contextMenus = new Collection<string, ContextMenu>();
 client.slashCommands = new Collection<string, SlashCommand>();
 client.config = config;
 client.logger = new Logger(client);
-client.trello = new TrelloClient(client);
 
 new CommandApplicationLoader(client, config).load();
 require('./handlers/Event')(client);

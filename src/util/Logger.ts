@@ -1,4 +1,4 @@
-import { APIEmbedField, Client, ColorResolvable, EmbedBuilder, GuildMember, Interaction } from "discord.js";
+import { APIEmbedField, Client, ColorResolvable, EmbedBuilder, Guild, GuildMember, Interaction } from "discord.js";
 
 class Logger {
     private client: Client;
@@ -7,22 +7,22 @@ class Logger {
         this.client = client;
     }
 
-    public logToDiscord({ interaction, issuer, title, description, color = "Aqua", fields = [] }: { interaction: Interaction; issuer: GuildMember; title: string; description: string; color?: ColorResolvable; fields?: APIEmbedField[]; }) {
-        let loggingArea = interaction.guild?.channels.resolve(this.client.config.discord.logChannel);
+    public logToDiscord({ guild, issuer, title, description, color = "Aqua", fields = [] }: { guild: Guild; issuer: GuildMember; title: string; description: string; color?: ColorResolvable; fields?: APIEmbedField[]; }) {
+        let loggingArea = guild.channels.resolve(this.client.config.discord.logChannel);
         if (!loggingArea?.isTextBased()) return;
 
         loggingArea.send({
             embeds: [
                 new EmbedBuilder()
                     .setAuthor({
-                        name: issuer.nickname!!,
-                        iconURL: issuer.avatarURL()!!
+                        name: issuer.user.username,
+                        iconURL: issuer.avatarURL() ?? undefined
                     })
                     .setTitle(title)
                     .setDescription(description)
                     .setColor(color)
                     .setFooter({
-                        text: "Athena-System | made with ❤️ by Spades",
+                        text: "Barkeep-System | made with ❤️ by Spades",
                         iconURL: this.client.user?.avatarURL()!!
                     })
                     .setFields(fields ?? [])
